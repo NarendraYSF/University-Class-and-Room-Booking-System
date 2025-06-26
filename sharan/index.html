@@ -50,6 +50,33 @@
 
 <body>
 
+	<!-- SESSION CHECK -->
+	<script>
+		// Check if user is logged in
+		if (!localStorage.getItem('loggedIn')) {
+			window.location.href = 'login.html';
+		}
+		
+		// Display user information
+		document.addEventListener('DOMContentLoaded', function() {
+			var username = localStorage.getItem('username');
+			if (username) {
+				document.getElementById('user-display').textContent = username;
+			}
+		});
+		
+		// Logout function
+		function logout() {
+			// Clear localStorage
+			localStorage.removeItem('loggedIn');
+			localStorage.removeItem('username');
+			localStorage.removeItem('user_type');
+			
+			// Call PHP logout handler
+			window.location.href = 'logout.php';
+		}
+	</script>
+
 	<div class="page-wraper"> 
 
         <!-- HEADER START -->
@@ -142,9 +169,12 @@
                                             <li><a href="icon-font.html">Icon Font </a></li> 
                                         </ul>                                    
                                     </li>                                
-                                    <!-- Login Button -->
+                                    <!-- Logout Button -->
                                     <li>
-                                        <a href="login.html"><i class="fa fa-sign-in"></i> Login</a>
+                                        <a href="javascript:void(0);" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);"><i class="fa fa-user"></i> <span id="user-display">User</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -1064,7 +1094,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 80m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 35 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Projector, Whiteboard, AC </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Projector, Whiteboard, AC </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1088,7 +1118,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 50m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 30 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Lab Equipment, Microscope, Safety Gear </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Lab Equipment, Microscope, Safety Gear </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1112,7 +1142,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 150m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 75 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Large Screen, Sound System, Stage </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Large Screen, Sound System, Stage </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1136,7 +1166,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 40m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 10 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Conference Table, Whiteboard, AC </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Conference Table, Whiteboard, AC </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1160,7 +1190,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 110m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 50 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Dual Projector, Sound System, Stage </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Dual Projector, Sound System, Stage </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1184,7 +1214,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 40m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 20 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Computers, Network, AC </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Computers, Network, AC </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1208,7 +1238,7 @@
                                             <ul class="clearfix">
                                                 <li><i class="fa fa-expand"></i> <strong>Size:</strong> 100m² </li>
                                                 <li><i class="fa fa-user"></i> <strong>Capacity:</strong> 50 </li>
-                                                <li><i class="fa fa-eye"></i> <strong>Equipment:</strong> Projector, Whiteboard, AC </li>
+                                                <li><i class="fa fa-cogs"></i> <strong>Equipment:</strong> Projector, Whiteboard, AC </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1881,7 +1911,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="wt-footer-bot-center">
-                            <span class="copyrights-text">© 2024 Your Company. Designed By Thewebmax.</span>
+                            <span class="copyrights-text">© 2024 Your Company. Designed By Narendra Yusuf.</span>
                         </div>
                     </div>
                 </div>

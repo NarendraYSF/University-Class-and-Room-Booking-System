@@ -1,0 +1,47 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Protect against direct access to PHP files (except login_handler.php and logout.php)
+<Files "*.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "login_handler.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+<Files "logout.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+<Files "session_check.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Redirect to login if accessing index.html without session
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} ^/index\.html$
+RewriteCond %{HTTP_COOKIE} !PHPSESSID
+RewriteRule ^(.*)$ login.html [L,R=302]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Prevent access to sensitive files
+<Files ".htaccess">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "*.log">
+    Order Allow,Deny
+    Deny from all
+</Files> 

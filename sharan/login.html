@@ -50,7 +50,7 @@
             margin-bottom: 30px;
         }
         .login-header img {
-            max-width: 150px;
+            max-width: 350px;
             margin-bottom: 20px;
         }
         .login-header h2 {
@@ -152,28 +152,28 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <img src="images/logo.png" alt="University Logo">
+            <img src="images/uni-logo.png" alt="University Logo">
             <h2>Welcome!</h2>
             <p>Please login to access the classroom booking system</p>
         </div>
         
-        <form>
+        <form id="loginForm" method="post">
             <div class="user-type-select">
                 <div class="btn-group" role="group" id="user-type-group" style="position: relative;">
                     <div class="highlight-bar"></div>
-                    <button type="button" class="btn active">Student</button>
-                    <button type="button" class="btn">Lecturer</button>
+                    <button type="button" class="btn active">Mahasiswa</button>
+                    <button type="button" class="btn">Dosen</button>
                     <button type="button" class="btn">Staff</button>
                 </div>
             </div>
             <input type="hidden" name="user_type" id="user_type" value="Student">
 
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Student ID Number" required>
+                <input type="text" name="username" class="form-control" placeholder="Student ID Number" required>
             </div>
             
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
             </div>
             
             <div class="remember-me">
@@ -225,17 +225,55 @@
             });
 
             // Login form submission handler
-            $('form').on('submit', function(e) {
+            $('#loginForm').on('submit', function(e) {
                 e.preventDefault();
-                var id = $(this).find('input[type="text"]').val().trim();
-                var pw = $(this).find('input[type="password"]').val();
-                if(id === '1234567890' && pw === 'kelompok1keren') {
-                    localStorage.setItem('loggedIn', 'true');
-                    localStorage.setItem('username', id);
-                    window.location.href = 'index.html';
-                } else {
-                    alert('Invalid ID number or password.');
-                }
+                
+                var formData = {
+                    username: $(this).find('input[name="username"]').val().trim(),
+                    password: $(this).find('input[name="password"]').val(),
+                    user_type: $('#user_type').val()
+                };
+                
+                // Try PHP authentication first, fallback to JavaScript if it fails
+                $.ajax({
+                    type: 'POST',
+                    url: 'login_handler.php',
+                    data: formData,
+                    dataType: 'json',
+                    timeout: 5000, // 5 second timeout
+                    success: function(response) {
+                        if (response.success) {
+                            // Store in localStorage as backup
+                            localStorage.setItem('loggedIn', 'true');
+                            localStorage.setItem('username', formData.username);
+                            localStorage.setItem('user_type', formData.user_type);
+                            
+                            // Redirect to index page
+                            window.location.href = response.redirect;
+                        } else {
+                            alert(response.message || 'Login failed. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Fallback to JavaScript authentication
+                        console.log('PHP authentication failed, trying JavaScript fallback...');
+                        
+                        // JavaScript authentication
+                        if ((formData.username === '1234567890' && formData.password === 'kelompok1keren') ||
+                            (formData.username === '12456789' && formData.password === 'kelompok1keren')) {
+                            
+                            // Store in localStorage
+                            localStorage.setItem('loggedIn', 'true');
+                            localStorage.setItem('username', formData.username);
+                            localStorage.setItem('user_type', formData.user_type);
+                            
+                            // Redirect to index page
+                            window.location.href = 'index.html';
+                        } else {
+                            alert('Invalid ID number or password. Please try again.');
+                        }
+                    }
+                });
             });
         });
     </script>
